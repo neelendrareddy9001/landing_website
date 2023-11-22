@@ -1,11 +1,54 @@
-import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
-import React from "react";
-import FastfoodIcon from "@mui/icons-material/Fastfood";
-import { Link } from "react-router-dom";
-import ".././Styles/HeaderStyles.css";
-import MenuIcon from "@mui/icons-material/Menu";
+import React, { useState } from "react";
+import {
+  AppBar,
+  Box,
+  Divider,
+  Drawer,
+  IconButton,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import Logo from ".././images/logo.svg";
 
+import MenuIcon from "@mui/icons-material/Menu";
+import { NavLink } from "react-router-dom";
+import ".././Styles/HeaderStyles.css";
 const Header = () => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  // hndle menu click
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+  //menu drawer
+  const drawer = (
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
+      <Typography
+        color={"goldenrod"}
+        variant="h6"
+        component="div"
+        sx={{ flexGrow: 1, my: 2 }}
+      >
+        <img src={Logo} alt="logo" height={"70"} width="200" />
+      </Typography>
+      <Divider />
+      <ul className="mobile-navigation">
+        <li>
+          <NavLink activeClassName="active" to={"/"}>
+            Home
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to={"/menu"}>Menu</NavLink>
+        </li>
+        <li>
+          <NavLink to={"/about"}>About</NavLink>
+        </li>
+        <li>
+          <NavLink to={"/contact"}>Contact</NavLink>
+        </li>
+      </ul>
+    </Box>
+  );
   return (
     <>
       <Box>
@@ -19,6 +62,7 @@ const Header = () => {
                 mr: 2,
                 display: { sm: "none" },
               }}
+              onClick={handleDrawerToggle}
             >
               <MenuIcon />
             </IconButton>
@@ -28,27 +72,47 @@ const Header = () => {
               component="div"
               sx={{ flexGrow: 1 }}
             >
-              <FastfoodIcon />
-              My Restaurent
+              <img src={Logo} alt="logo" height={"70"} width="250" />
             </Typography>
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
               <ul className="navigation-menu">
                 <li>
-                  <Link to={"/"}>Home</Link>
+                  <NavLink activeClassName="active" to={"/"}>
+                    Home
+                  </NavLink>
                 </li>
                 <li>
-                  <Link to={"/menu"}>Menu</Link>
+                  <NavLink to={"/menu"}>Menu</NavLink>
                 </li>
                 <li>
-                  <Link to={"/about"}>About</Link>
+                  <NavLink to={"/about"}>About</NavLink>
                 </li>
                 <li>
-                  <Link to={"/contact"}>Contact</Link>
+                  <NavLink to={"/contact"}>Contact</NavLink>
                 </li>
               </ul>
             </Box>
           </Toolbar>
         </AppBar>
+        <Box component="nav">
+          <Drawer
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            sx={{
+              display: { xs: "block", sm: "none" },
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: "240px",
+              },
+            }}
+          >
+            {drawer}
+          </Drawer>
+        </Box>
+        <Box sx={{ padding: 2 }}>
+          <Toolbar />
+        </Box>
       </Box>
     </>
   );
